@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Administrator\\Desktop\\OnlineBook\\OnlineBookWeb\\OnlineBookWeb.csproj",
+      "projectUniqueName": "C:\\Repositories\\OnlineBook\\OnlineBookWeb\\OnlineBookWeb.csproj",
       "projectName": "OnlineBookWeb",
-      "projectPath": "C:\\Users\\Administrator\\Desktop\\OnlineBook\\OnlineBookWeb\\OnlineBookWeb.csproj",
+      "projectPath": "C:\\Repositories\\OnlineBook\\OnlineBookWeb\\OnlineBookWeb.csproj",
       "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Administrator\\Desktop\\OnlineBook\\OnlineBookWeb\\obj\\",
+      "outputPath": "C:\\Repositories\\OnlineBook\\OnlineBookWeb\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",

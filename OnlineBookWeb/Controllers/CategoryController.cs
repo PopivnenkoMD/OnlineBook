@@ -14,6 +14,10 @@ namespace OnlineBookWeb.Controllers
         public IActionResult Index()
 		{
 			List<Category> objCategoryList = _db.Categories.ToList();
+			return View(objCategoryList); //вернёт view с данными
+		}
+		public IActionResult Create()
+		{
 			return View();
 		}
 	}

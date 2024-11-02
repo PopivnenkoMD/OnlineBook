@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using OnlineBookWeb.Data;
-using OnlineBookWeb.Models;
+using OnlineBook.DataAccess.Data;
+using OnlineBook.Models;
 using System.Linq;
 
 namespace OnlineBookWeb.Controllers

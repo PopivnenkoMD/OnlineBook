@@ -2766,7 +2766,10 @@
         },
         "runtime": {
           "bin/placeholder/OnlineBook.Models.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       },
       "OnlineBook.Utility/1.0.0": {
         "type": "project",

@@ -29,7 +29,7 @@ namespace OnlineBook.DataAccess.Repository
         public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null)
         {
             IQueryable<T> query = dbSet.Where(filter); // Применяем фильтр
-			if (string.IsNullOrEmpty(includeProperties))
+			if (!string.IsNullOrEmpty(includeProperties))
 			{
 				foreach (var includeProp in includeProperties
 					.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))

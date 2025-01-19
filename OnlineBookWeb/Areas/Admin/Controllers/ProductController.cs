@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -6,11 +7,13 @@ using OnlineBook.DataAccess.Data;
 using OnlineBook.DataAccess.Repository.IRepository;
 using OnlineBook.Models;
 using OnlineBook.Models.ViewModels;
+using OnlineBook.Utility;
 using System.Linq;
 
 namespace OnlineBookWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    //[Authorize(Roles = SD.Role_Admin)]
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

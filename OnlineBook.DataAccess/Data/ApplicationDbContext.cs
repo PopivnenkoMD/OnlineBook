@@ -14,6 +14,7 @@ namespace OnlineBook.DataAccess.Data
 		public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<Company> Companies { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
             base.OnModelCreating(modelBuilder);
@@ -109,6 +110,17 @@ namespace OnlineBook.DataAccess.Data
 					ImageUrl = ""
 				}
                 );
+            modelBuilder.Entity<Company>().HasData(
+                new Company
+                {
+                    Id = 1,
+                    Name = "Apple",
+                    StreetAddress = "Main 1a/2",
+                    City = "Chicago",
+                    State = "Illinois",
+                    PostalCode = "12354",
+                    PhoneNumber = "1567890234"
+                });
         }
 	}
 }

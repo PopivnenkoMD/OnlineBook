@@ -3199,6 +3199,9 @@
       "OnlineBook.Utility/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "Microsoft.AspNetCore.Identity.UI": "9.0.0"
+        },
         "compile": {
           "bin/placeholder/OnlineBook.Utility.dll": {}
         },

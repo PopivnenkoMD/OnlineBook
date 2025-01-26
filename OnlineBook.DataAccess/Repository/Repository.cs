@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using OnlineBook.DataAccess.Data;
 using OnlineBook.DataAccess.Repository.IRepository;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace OnlineBook.DataAccess.Repository
 {
@@ -26,23 +27,37 @@ namespace OnlineBook.DataAccess.Repository
             dbSet.Add(entity);
         }
 
-        public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null)
+        public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false)
         {
-            IQueryable<T> query = dbSet.Where(filter); // Применяем фильтр
-			if (!string.IsNullOrEmpty(includeProperties))
-			{
-				foreach (var includeProp in includeProperties
-					.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-				{
-					query = query.Include(includeProp);
-				}
-			}
-			return query.FirstOrDefault();
+            IQueryable<T> query;
+            if (tracked)
+            {
+                query = dbSet; // Применяем фильтр                
+            }
+            else 
+            {
+                query = dbSet.AsNoTracking();
+                
+            }
+            query = query.Where(filter);
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach (var includeProp in includeProperties
+                    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProp);
+                }
+            }
+            return query.FirstOrDefault();
         }
 
-        public IEnumerable<T> GetAll(string? includeProperties = null)
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter, string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
             if (!string.IsNullOrEmpty(includeProperties)) 
             {
                 foreach (var includeProp in includeProperties

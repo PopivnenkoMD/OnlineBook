@@ -110,7 +110,7 @@ namespace OnlineBookWeb.Areas.Admin.Controllers
             }
         }       
 
-        #region APPI CALLS
+        #region API CALLS
         [HttpGet]
         public IActionResult GetAll() 
         {

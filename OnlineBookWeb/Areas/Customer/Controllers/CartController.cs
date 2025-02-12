@@ -121,16 +121,29 @@ namespace OnlineBookWeb.Areas.Customer.Controllers
 
             if (applicationUser.CompanyId.GetValueOrDefault() == 0)
             {
-                
-            }
+				ShoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusApproved;
+				ShoppingCartVM.OrderHeader.OrderStatus = SD.StatusApproved;
+			}
 
             return RedirectToAction(nameof(OrderConfirmation), new {id = ShoppingCartVM.OrderHeader.Id});
         }
 
         public IActionResult OrderConfirmation(int id) 
         {
-            return View(id);
-        }
+			var claimsIdentity = (ClaimsIdentity)User.Identity;
+			var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+			var shoppingCarts = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userId).ToList();
+
+			// Удаляем все элементы корзины
+			_unitOfWork.ShoppingCart.RemoveRange(shoppingCarts);
+			_unitOfWork.Save();
+
+			// Можно очистить сессию, если корзина хранится в сессии
+			HttpContext.Session.Clear();
+
+			return View(id);
+		}
 
         public IActionResult Plus(int cartId)
         {
@@ -142,10 +155,12 @@ namespace OnlineBookWeb.Areas.Customer.Controllers
         }
         public IActionResult Minus(int cartId)
         {
-            var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id == cartId);
+            var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id == cartId, tracked: true);
             if (cartFromDb.Count <= 1)
             {
                 //remove that from cart
+                HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart
+                .GetAll(u => u.ApplicationUserId == cartFromDb.ApplicationUserId).Count() - 1);
                 _unitOfWork.ShoppingCart.Remove(cartFromDb);
             }
             else
@@ -158,10 +173,12 @@ namespace OnlineBookWeb.Areas.Customer.Controllers
         }
         public IActionResult Remove(int cartId)
         {
-            var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id == cartId);
+            var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id == cartId, tracked:true);
             //remove that from cart
+            HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart
+                .GetAll(u => u.ApplicationUserId == cartFromDb.ApplicationUserId).Count()-1);
             _unitOfWork.ShoppingCart.Remove(cartFromDb);
-            _unitOfWork.Save();
+            _unitOfWork.Save();            
             return RedirectToAction(nameof(Index));
         }
 

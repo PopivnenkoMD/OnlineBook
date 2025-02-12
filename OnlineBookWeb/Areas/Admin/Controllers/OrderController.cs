@@ -122,7 +122,59 @@ namespace OnlineBookWeb.Areas.Admin.Controllers
 			return RedirectToAction("Details", "Order", new { orderId = OrderVM.OrderHeader.Id });
 		}
 
-		
+		[ActionName("Details")]
+		[HttpPost]
+		public IActionResult Details_PAY_NOW(int orderId)
+		{
+			// Загружаем данные о заказе
+			var orderHeader = _unitOfWork.OrderHeader.Get(u => u.Id == orderId, includeProperties: "ApplicationUser");
+
+			if (orderHeader == null)
+			{
+				TempData["Error"] = "Order not found.";
+				return RedirectToAction("Details", "Order", new { orderId });
+			}
+
+			// Проверяем статус оплаты
+			if (orderHeader.PaymentStatus == SD.PaymentStatusDelayedPayment)
+			{
+				// Обновляем статус на "Оплачено"
+				_unitOfWork.OrderHeader.UpdateStatus(orderHeader.Id, orderHeader.OrderStatus, SD.PaymentStatusApproved);
+				_unitOfWork.Save();
+
+				TempData["Success"] = "Payment processed successfully!";
+			}
+			else
+			{
+				TempData["Error"] = "Order is already paid.";
+			}
+
+			// Редирект на страницу подтверждения платежа
+			return RedirectToAction("PaymentConfirmation", "Order", new { orderId = orderId });
+		}
+
+		[HttpGet]
+		public IActionResult PaymentConfirmation(int orderId)
+		{
+			return View(orderId);
+		}
+
+		//public IActionResult OrderConfirmation(int orderHeaderId)
+		//{
+		//	OrderHeader orderHeader = _unitOfWork.OrderHeader.Get(u => u.Id == orderHeaderid);
+		//	if (orderHeader.PaymentStatus == SD.PaymentStatusDelayedPayment)
+		//	{
+		//		var service = new SessionService();
+		//		Session session = service.Get(orderHeader.SessionId);
+		//		//check the stripe status
+		//		if (session.PaymentStatus.ToLower() == "paid")
+		//		{
+		//			_unitOfWork.OrderHeader.UpdateStatus(orderHeaderid, orderHeader.OrderStatus, SD.PaymentStatusApproved);
+		//			_unitOfWork.Save();
+		//		}
+		//	}
+		//	return View(orderHeaderid)
+		//}
 
 		#region API CALLS
 		[HttpGet]

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineBook.DataAccess.Data;
 
@@ -11,9 +12,11 @@ using OnlineBook.DataAccess.Data;
 namespace OnlineBook.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250213061939_removeImageURL")]
+    partial class removeImageURL
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -545,28 +548,6 @@ namespace OnlineBook.DataAccess.Migrations
                         });
                 });
 
-            modelBuilder.Entity("OnlineBook.Models.ProductImage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductImages");
-                });
-
             modelBuilder.Entity("OnlineBook.Models.ShoppingCart", b =>
                 {
                     b.Property<int>("Id")
@@ -714,17 +695,6 @@ namespace OnlineBook.DataAccess.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("OnlineBook.Models.ProductImage", b =>
-                {
-                    b.HasOne("OnlineBook.Models.Product", "Prodcut")
-                        .WithMany("ProductImages")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Prodcut");
-                });
-
             modelBuilder.Entity("OnlineBook.Models.ShoppingCart", b =>
                 {
                     b.HasOne("OnlineBook.Models.ApplicationUser", "ApplicationUser")
@@ -751,11 +721,6 @@ namespace OnlineBook.DataAccess.Migrations
                         .HasForeignKey("CompanyId");
 
                     b.Navigation("Company");
-                });
-
-            modelBuilder.Entity("OnlineBook.Models.Product", b =>
-                {
-                    b.Navigation("ProductImages");
                 });
 #pragma warning restore 612, 618
         }

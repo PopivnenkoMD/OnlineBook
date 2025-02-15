@@ -11,16 +11,17 @@ using System.Threading.Tasks;
 
 namespace OnlineBook.DataAccess.Repository
 {
-    public class ApplicationUserRepository : Repository<ApplicationUser>, IApplicationUserRepository
-    {
+    public class ProductImageRepository : Repository<ProductImage>, IProductImageRepository
+	{
         private readonly ApplicationDbContext _db;
-        public ApplicationUserRepository(ApplicationDbContext db) : base(db)
+        public ProductImageRepository(ApplicationDbContext db) : base(db)
         {
             _db = db;
         }
-        public void Update(ApplicationUser applicationUser)
+
+        public void Update(ProductImage obj)
         {
-            _db.ApplicationUsers.Update(applicationUser);
+            _db.ProductImages.Update(obj);
         }
     }
 }
